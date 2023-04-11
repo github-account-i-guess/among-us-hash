@@ -1,0 +1,19 @@
+{
+  "name": "bad-word-hash",
+  "version": "1.0.0",
+  "description": "Hashes your password into a hash with a bad word in it",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/github-account-i-guess/bad-word-hash.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/github-account-i-guess/bad-word-hash/issues"
+  },
+  "homepage": "https://github.com/github-account-i-guess/bad-word-hash#readme"
+}

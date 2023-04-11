@@ -10,24 +10,22 @@ function hash(string) {
     return hashObj.getHash("B64"); 
 }
 
-const hashes = [];
-
 function recurseHash(string, callback, n) {
     const hashed = hash(string);
-    hashes.push(hashed);
 
     const lowerCase = hashed.toLowerCase();
     const sus = amongUsWords.reduce((acc, cur) => {
         if (acc) return acc;
         return lowerCase.includes(cur);
     }, false);
+
     const callNext = _ => recurseHash(hashed, callback, n + 1);
     if (sus) callback(hashed);
     else {
         try {
             callNext();
         } catch (e) {
-            hashProgress.innerHTML = n;
+            // hashProgress.innerHTML = n;
             setTimeout(callNext)
         }
     }
@@ -50,3 +48,15 @@ hashButton.addEventListener("click", _ => {
         `;
     }, 0);
 });
+
+const findInput = (word, callback, attempts) => {
+    const randomWord = (Math.random() + 1).toString(32).substring(7);
+    // if (!(attempts % 100)) console.log(attempts);
+    recurseHash(randomWord, hash => {
+        if(hash.toLowerCase().includes(word)) {
+            callback(randomWord);
+        } else {
+            findInput(word, callback, attempts ? attempts + 1 : 1);
+        }
+    });
+}

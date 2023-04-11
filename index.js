@@ -17,7 +17,10 @@ function recurseHash(string, callback, n) {
     hashes.push(hashed);
 
     const lowerCase = hashed.toLowerCase();
-    const sus = lowerCase.includes("amongus") || lowerCase.includes("sus");
+    const sus = amongUsWords.reduce((acc, cur) => {
+        if (acc) return acc;
+        return lowerCase.includes(cur);
+    }, false);
     const callNext = _ => recurseHash(hashed, callback, n + 1);
     if (sus) callback(hashed);
     else {
@@ -30,6 +33,13 @@ function recurseHash(string, callback, n) {
     }
     
 }
+
+let amongUsWords = [];
+fetch('./among-us-words.json')
+    .then((response) => response.json())
+    .then((json) => {
+        amongUsWords = json;
+    });
 
 hashButton.addEventListener("click", _ => {
     const { value } = hashInput;

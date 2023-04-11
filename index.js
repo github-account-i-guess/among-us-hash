@@ -1,6 +1,3 @@
-const { CensorSensor } = this['censor-sensor'];
-const censor = new CensorSensor();
-
 const hashInput = document.querySelector("#hash-input");
 const hashButton = document.querySelector("#hash-button");
 const hashResult = document.querySelector("#hash-result");
@@ -13,25 +10,33 @@ function hash(string) {
     return hashObj.getHash("B64"); 
 }
 
+const hashes = [];
+
 function recurseHash(string, callback, n) {
     const hashed = hash(string);
+    hashes.push(hashed);
 
-    const profane = censor.isProfane(string);
-
+    const lowerCase = hashed.toLowerCase();
+    const sus = lowerCase.includes("amongus") || lowerCase.includes("sus");
     const callNext = _ => recurseHash(hashed, callback, n + 1);
-    if (profane) callback(hashed);
-    try {
-        callNext();
-    } catch (e) {
-        hashProgress.innerHTML = n;
-        setTimeout(callNext)
+    if (sus) callback(hashed);
+    else {
+        try {
+            callNext();
+        } catch (e) {
+            hashProgress.innerHTML = n;
+            setTimeout(callNext)
+        }
     }
+    
 }
 
 hashButton.addEventListener("click", _ => {
     const { value } = hashInput;
 
     recurseHash(value, hash => {
-        hashResult.innerHTML = hash;
+        hashResult.innerHTML = `
+        ${hash}
+        `;
     }, 0);
 });
